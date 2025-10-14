@@ -23,7 +23,7 @@ From here you may build the Docker image and run it in Docker Compose:
 sudo docker compose build && sudo docker compose up -d
 ```
 
-You may now locally utilize the website by accessing it through your local host which is exposed by default at port 5000:
+You may now locally utilize the website by accessing it through your localhost which is exposed by default at port 5000:
 
 `http://localhost:5000`
 
