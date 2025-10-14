@@ -2,14 +2,14 @@
 
 This is the instruction guide on how to run the repository code. You may also enter the following link to directly interface with the website through my VPS instead of having to build it yourself: {URL}
 
-This repository is an example project for the IKT222 25H course at UiA Grimstad, Assignment 3 - User Authentication.
+This repository is an example project for the IKT222 25H course at UiA Grimstad, Assignment 3 - User Authentication :mortar-board:.
 
-## Prerequisites
+## Prerequisites :exclamation:
 
 1. Make sure you have Docker installed in order to be able to run this repository.
     - You may install Docker for your OS through the following link: [Docker Install](https://docs.docker.com/engine/install/)
 
-## Setup 
+## Setup :shipit:
 
 Start by cloning the repository to your local computer:
 
@@ -27,7 +27,6 @@ You may now locally utilize the website by accessing it through your local host 
 
 `http://localhost:5000`
 
-:shipit:
 
 ## Finished?
 
