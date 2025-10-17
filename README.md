@@ -45,7 +45,7 @@ You may now locally utilize the website by accessing it through your localhost w
 Simply shut down the container:
 
 ```bash
-sudo docker compose down
+docker compose down
 ```
 
 All done :white_check_mark:
