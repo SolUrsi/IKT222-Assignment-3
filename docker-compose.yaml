@@ -1,6 +1,11 @@
 services:
-  app:
+  web:
     build: .
-
-  db:
-    
+    container_name: flask_chat_app
+    ports:
+      -"5000:5000"
+    volumes:
+      -./data:/app/data
+    env_file:
+      - .env
+  

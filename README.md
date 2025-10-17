@@ -17,6 +17,12 @@ Start by cloning the repository to your local computer:
 git clone https://github.com/SolUrsi/IKT222-Assignment-3.git
 ```
 
+Now copy the contents of `.env.example` into a new environment `.env` and change the SECRET_KEY variable to a secure string. This will be used by Flask to verify sessions:
+
+```bash
+cp .env.example .env
+```
+
 From here you may build the Docker image and run it in Docker Compose:
 
 ```bash
