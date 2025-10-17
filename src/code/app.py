@@ -62,10 +62,11 @@ def init_db_command():
         click.echo("Users already exist. Skipping data seed.")
 
 def seed_data():
-    hashed_password = bcrypt.generate_password_hash("password").decode('utf-8')
+    hashed_password1 = bcrypt.generate_password_hash("password").decode('utf-8')
+    hashed_password2 = bcrypt.generate_password_hash("secret").decode('utf-8')
 
-    alice = User(username='Alice', email='alice@secret.com', password=hashed_password)
-    bob = User(username='Bob', email='bob@secret.com', password=hashed_password)
+    alice = User(username='Alice', email='alice@secret.com', password=hashed_password1, failed_login_attempts=0, lockout_until=None)
+    bob = User(username='Bob', email='bob@secret.com', password=hashed_password2, failed_login_attempts=0, lockout_until=None)
 
     db.session.add_all([alice, bob])
     db.session.commit()
@@ -73,22 +74,18 @@ def seed_data():
     posts = [
             Post(
                 user_id=alice.id, 
-                title='Secret Chat Log', 
                 content='Hey Bob, did you hear about the cat intelligence project?'
             ),
             Post(
                 user_id=bob.id, 
-                title='Secret Chat Log', 
                 content='Agent Alice! Keep it down! The topic is *highly* classified. But yes, the purr-fection levels are off the charts.'
             ),
             Post(
                 user_id=alice.id, 
-                title='Secret Chat Log', 
                 content='Right, right. Code word "Whiskers". Anyway, Whiskers 7 is showing advanced object permanence related to tuna cans.'
             ),
             Post(
-                user_id=bob.id, 
-                title='Secret Chat Log', 
+                user_id=bob.id,
                 content='Incredible. Report back on the new feline overlord status. Over and out.'
             ),
         ]

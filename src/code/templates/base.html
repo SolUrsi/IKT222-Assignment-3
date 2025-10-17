@@ -18,7 +18,7 @@
           width: 8px;
       }
       #chat-history::-webkit-scrollbar-thumb {
-          background-color: #059669; /* Emerald 600 */
+          background-color: #059669; /* Emerald-600 */
           border-radius: 4px;
       }
     </style>
@@ -75,7 +75,7 @@
                         {% elif category == 'error' or category == 'danger' %}
                             {% set alert_class = 'bg-red-800 border-red-600 text-red-200' %}
                         {% elif category == 'info' %}
-                            {% set alert_class = 'bg-blue-800 border-blue-600 text-blue-200' %}
+                            {% set alert_class = 'bg-orange-800 border-orange-600 text-orange-200' %}
                         {% else %}
                             {% set alert_class = 'bg-yellow-800 border-yellow-600 text-yellow-200' %}
                         {% endif %}

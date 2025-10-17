@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
-from sqlalchemy import desc
+from sqlalchemy import asc
 
 from .models import db, Post, User
 from .forms import MessageForm
@@ -30,10 +30,10 @@ def room():
         db.session.add(newpost)
         db.session.commit()
     
-        flash("Protocol Confirmed!", "success")
+        flash("[SYSTEM] Protocol confirmed.", "success")
         return redirect(url_for('main.room'))
     
-    posts = Post.query.options(db.joinedload(Post.author)).order_by(desc(Post.timestamp)).all()
+    posts = Post.query.options(db.joinedload(Post.author)).order_by(asc(Post.timestamp)).all()
 
     return render_template("room.html", posts=posts, form=form)
 

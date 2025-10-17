@@ -24,12 +24,12 @@ def signup():
         # Check if user already exists
         existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
         if existing_user:
-            flash("Username or email already exists. Please choose another.", "error")
+            flash("[SYSTEM] Similar agent already exists. Choose another.", "error")
             return redirect(url_for("auth.signup"))
         new_user = User(username=username, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        flash("Account created successfully! Please log in.", "success")
+        flash("[SYSTEM] Agent created! Log in.", "success")
         return redirect(url_for("auth.login"))
     
     return render_template("signup.html", form=form)
@@ -45,7 +45,7 @@ def login():
 
         if user and user.lockout_until and user.lockout_until > datetime.datetime.now(datetime.UTC):
             remaining = user.lockout_until - datetime.datetime.now(datetime.UTC)
-            flash(f"Account locked. Please try again in {remaining.seconds // 60} minutes and {remaining.seconds % 60} seconds.", "error")
+            flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION.Agent locked. Try again in {remaining.seconds // 60} minutes and {remaining.seconds % 60} seconds.", "error")
             return render_template("login.html", form=form)
         
         # --- Check Credentials ---
@@ -56,7 +56,7 @@ def login():
             db.session.commit()
 
             login_user(user)
-            flash("Logged in successfully!", "success")
+            flash("[SYSTEM] Operation successful. Agent now active.", "success")
             return redirect(url_for("main.room"))
         else:
             # --- Failed Login Attempt ---
@@ -68,12 +68,12 @@ def login():
                     lockout_time = datetime.datetime.now(datetime.UTC) + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
                     user.lockout_until = lockout_time
                     user.failed_login_attempts = 0 # Reset count after lockout
-                    flash(f"Too many failed attempts. Your account is locked for {LOCKOUT_DURATION_MINUTES} minutes.", "error")
+                    flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION. Agent is locked for {LOCKOUT_DURATION_MINUTES} minutes.", "error")
                 else:
-                    flash(f"Invalid username or password. You have {MAX_LOGIN_ATTEMPTS - user.failed_login_attempts} attempts left.", "error")
+                    flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION.Invalid agent credentials. You have {MAX_LOGIN_ATTEMPTS - user.failed_login_attempts} attempts left.", "error")
             else:
                 # Security Best Practice: Don't give away whether the *username* exists.
-                flash("Invalid username or password.", "error")
+                flash("[SYSTEM] WHISKER PROTOCOL VIOLATION.Invalid agent credentials.", "error")
             
             db.session.commit()
 
@@ -83,5 +83,5 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("You have been logged out.", "info")
+    flash("[SYSTEM] Agent has closed comms.", "info")
     return redirect(url_for("main.home"))
