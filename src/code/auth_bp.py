@@ -44,8 +44,8 @@ def login():
         password = form.password.data
         user = User.query.filter_by(username=username).first()
 
-        if user and user.lockout_until and user.lockout_until > datetime.datetime.now(datetime.UTC):
-            remaining = user.lockout_until - datetime.datetime.now(datetime.UTC)
+        if user and user.lockout_until and user.lockout_until > datetime.utcnow():
+            remaining = user.lockout_until - datetime.utcnow()
             flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION.Agent locked. Try again in {remaining.seconds // 60} minutes and {remaining.seconds % 60} seconds.", "error")
             return render_template("login.html", form=form)
         
@@ -66,7 +66,7 @@ def login():
 
                 # --- 2. Check for Lockout condition ---
                 if user.failed_login_attempts >= MAX_LOGIN_ATTEMPTS:
-                    lockout_time = datetime.datetime.now(datetime.UTC) + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
+                    lockout_time = datetime.utcnow() + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
                     user.lockout_until = lockout_time
                     user.failed_login_attempts = 0 # Reset count after lockout
                     flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION. Agent is locked for {LOCKOUT_DURATION_MINUTES} minutes.", "error")
