@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
-import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from .models import db, User
 from .app import bcrypt
