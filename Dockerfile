@@ -6,8 +6,10 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ .
+COPY .env .
 
-RUN flask --app app init-db
+ENV FLASK_APP=code.app:app
+RUN python -m flask init-db
 
 EXPOSE 5000
 
