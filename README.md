@@ -32,7 +32,7 @@ echo "SECRET_KEY successfully written to .env"
 From here you may build the Docker image and run it in Docker Compose. The database structure will be automatically created in the ./data directory during the build process.
 
 ```bash
-sudo docker compose build && sudo docker compose up -d
+docker compose build && docker compose up -d
 ```
 
 You may now locally utilize the website by accessing it through your localhost which is exposed by default at port 5000:
