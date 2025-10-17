@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ .
 
-RUN flask --app src.code.app init-db
+RUN flask --app app init-db
 
 EXPOSE 5000
 
