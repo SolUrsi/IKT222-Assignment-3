@@ -66,7 +66,7 @@ def login():
 
                 # --- 2. Check for Lockout condition ---
                 if user.failed_login_attempts >= MAX_LOGIN_ATTEMPTS:
-                    lockout_time = datetime.now(datetime.UTC) + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
+                    lockout_time = datetime.datetime.now(datetime.UTC) + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
                     user.lockout_until = lockout_time
                     user.failed_login_attempts = 0 # Reset count after lockout
                     flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION. Agent is locked for {LOCKOUT_DURATION_MINUTES} minutes.", "error")
