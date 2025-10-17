@@ -1,11 +1,15 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
+from datetime import datetime, timedelta
 
 from .models import db, User
 from .app import bcrypt
 from .forms import LoginForm, SignupForm
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/')
+
+MAX_LOGIN_ATTEMPTS = 3
+LOCKOUT_DURATION_MINUTES = 5
 
 @auth_bp.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -38,12 +42,40 @@ def login():
         username = form.username.data
         password = form.password.data
         user = User.query.filter_by(username=username).first()
+
+        if user and user.lockout_until and user.lockout_until > datetime.datetime.now(datetime.UTC):
+            remaining = user.lockout_until - datetime.datetime.now(datetime.UTC)
+            flash(f"Account locked. Please try again in {remaining.seconds // 60} minutes and {remaining.seconds % 60} seconds.", "error")
+            return render_template("login.html", form=form)
+        
+        # --- Check Credentials ---
         if user and bcrypt.check_password_hash(user.password, password):
+            # --- Successful Login: Reset attempts and lockout ---
+            user.failed_login_attempts = 0
+            user.lockout_until = None
+            db.session.commit()
+
             login_user(user)
             flash("Logged in successfully!", "success")
             return redirect(url_for("main.room"))
         else:
-            flash("Invalid username or password.", "error")
+            # --- Failed Login Attempt ---
+            if user:
+                user.failed_login_attempts += 1
+
+                # --- 2. Check for Lockout condition ---
+                if user.failed_login_attempts >= MAX_LOGIN_ATTEMPTS:
+                    lockout_time = datetime.datetime.now(datetime.UTC) + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
+                    user.lockout_until = lockout_time
+                    user.failed_login_attempts = 0 # Reset count after lockout
+                    flash(f"Too many failed attempts. Your account is locked for {LOCKOUT_DURATION_MINUTES} minutes.", "error")
+                else:
+                    flash(f"Invalid username or password. You have {MAX_LOGIN_ATTEMPTS - user.failed_login_attempts} attempts left.", "error")
+            else:
+                # Security Best Practice: Don't give away whether the *username* exists.
+                flash("Invalid username or password.", "error")
+            
+            db.session.commit()
 
     return render_template("login.html", form=form)
 

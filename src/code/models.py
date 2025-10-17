@@ -4,6 +4,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -14,6 +15,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
+    failed_login_attempts = db.Column(db.Integer, default=0)
+    lockout_until = db.Column(db.DateTime, default=None)
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 

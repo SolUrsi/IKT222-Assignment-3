@@ -6,7 +6,7 @@ This repository is an example project for the IKT222 25H course at UiA Grimstad,
 
 ## Prerequisites :exclamation:
 
-1. Make sure you have Docker installed in order to be able to run this repository.
+1. Make sure you have **Docker** installed in order to be able to run this repository.
     - You may install Docker for your OS through the following link: [Docker Install](https://docs.docker.com/engine/install/)
 
 ## Setup :shipit:
@@ -22,6 +22,11 @@ Now copy the contents of `.env.example` into a new environment `.env` and change
 
 ```bash
 cp .env.example .env
+echo -n "Enter your secure SECRET_KEY: "
+read SEC_KEY
+sed -i.bak "s/SECRET_KEY=.*/SECRET_KEY=$SEC_KEY/" .env
+rm .env.bak
+echo "SECRET_KEY successfully written to .env"
 ```
 
 From here you may build the Docker image and run it in Docker Compose. The database structure will be automatically created in the ./data directory during the build process.
@@ -46,3 +51,5 @@ sudo docker compose down
 All done :white_check_mark:
 
 ## Known errors :x:
+
+Currently no know errors.
