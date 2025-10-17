@@ -3,9 +3,10 @@ services:
     build: .
     container_name: flask_chat_app
     ports:
-      -"5000:5000"
+      - "5000:5000"
     volumes:
-      -./data:/app/data
+      - ./data:/app/data
     env_file:
       - .env
+    restart: unless-stopped
   

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Whisker Protocol: Ejection{% endblock %}
+
+{% block content %}
+<div class="p-10 bg-gray-900 rounded-xl shadow-2xl border-2 border-red-500/70 max-w-lg mx-auto transform transition duration-500 text-gray-200">
+    <!-- Ejection Header -->
+    <h1 class="text-4xl font-extrabold text-red-400 mb-2 tracking-wider animate-pulse">
+        <span class="mr-2">❌</span> WHISKER PROTOCOL VIOLATION
+    </h1>
+    <h2 class="text-xl font-semibold text-emerald-400 mb-6 border-b border-gray-700 pb-3">
+        INTEL AGENT ESCORT INITIATED
+    </h2>
+    
+    <p class="text-lg text-gray-300 mb-8">
+        Your identification signature does not match the Feline Operative Registry.
+    </p>
+
+    <div class="bg-gray-800 p-4 border border-gray-700 rounded-lg shadow-inner mb-8">
+        <p class="text-sm text-red-400 font-mono mb-3">
+            [ACCESS_LOG] Cat-titude Readjustment Stream Initiated...
+        </p>
+        <div class="mx-auto my-6 w-full max-w-sm">
+        <div class="tenor-gif-embed" data-postid="16716450353126349283" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+            <a href="https://tenor.com/view/catcoin-crypto-funny-cat-cat-meme-cat-memes-gif-16716450353126349283" class="text-emerald-500 hover:text-emerald-300">Catcoin Crypto Sticker</a>
+        </div> 
+        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    </div>
+        <p class="mt-3 text-sm text-gray-500">
+            [SYSTEM] Your viewing session is mandatory and under constant, loving surveillance. We know where you live.
+    </div>
+
+    <p class="text-sm text-gray-400">
+        You are now safely sequestered in a *very* special private viewing room. 
+        Enjoy your extended stay.
+    </p>
+    
+    <!-- Link back to the secure login terminal -->
+    <a href="{{ url_for('main.home') }}" 
+       class="mt-6 inline-block bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-xl hover:bg-red-700 transition duration-150 cursor-pointer">
+        Return to Login Terminal
+    </a>
+</div>
+
+<style>
+/* Simple CSS to make the WHISKER PROTOCOL VIOLATION flash */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.animate-pulse {
+    animation: pulse 1.5s infinite;
+}
+</style>
+{% endblock %}

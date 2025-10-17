@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Whisker Protocol{% endblock %}
+
+{% block content %}
+<!-- Main secure card container -->
+<div class="p-10 bg-gray-800 rounded-xl shadow-2xl border-2 border-emerald-600/50 text-center">
+    <!-- Themed Title -->
+    <h1 class="text-4xl font-extrabold text-emerald-400 mb-4 tracking-wider">🐾 Supurrr Secret Chatroom 🐾</h1>
+    <p class="text-lg text-gray-300 mb-8">This is the **Whisker Protocol Comm Channel**. Access is strictly classified.</p>
+
+    {% if current_user.is_authenticated %}
+        <div class="bg-emerald-900/50 border-l-4 border-emerald-500 text-emerald-300 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold">Access Granted: Agent {{ current_user.username }}</p>
+            <p>Your encrypted mission awaits in the command center.</p>
+        </div>
+        <a href="{{ url_for('main.room') }}" class="inline-block bg-emerald-600 text-white font-bold py-3 px-8 rounded-lg shadow-xl hover:bg-emerald-700 transition-transform transform hover:-translate-y-1 tracking-widest">
+            ENTER COMMAND CENTER
+        </a>
+    {% else %}
+        <div class="bg-gray-700/50 border-l-4 border-gray-500 text-gray-300 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold">Secure Clearance Required</p>
+            <p>Prove your identity to join the Protocol.</p>
+        </div>
+        <div class="flex justify-center space-x-4">
+            <a href="{{ url_for('auth.signup') }}" class="inline-block bg-gray-700 text-emerald-400 font-bold py-3 px-6 rounded-lg shadow-lg border border-emerald-500 hover:bg-gray-600 transition-transform transform hover:-translate-y-1">
+                Begin Agent Enrollment
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="inline-block bg-emerald-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-emerald-700 transition-transform transform hover:-translate-y-1">
+                Enter Secure Key
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="mt-12 pt-8 border-t border-gray-700">
+        <h3 class="text-xl font-semibold text-emerald-500 mb-4">The Protocol's Guarantee</h3>
+        <p class="text-gray-400 max-w-2xl mx-auto">
+            Your transmissions are protected by **AES-256 Cloaking**. Data integrity is absolute, and discretion is mandatory. Any breach will be met with severe cat-titude.
+        </p>
+    </div>
+</div>
+{% endblock %}

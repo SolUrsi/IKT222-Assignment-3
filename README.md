@@ -1,6 +1,6 @@
 # IKT222-Assignment-3
 
-This is the instruction guide on how to run the repository code. You may also enter the following link to directly interface with the website through my VPS instead of having to build it yourself: {URL}
+This is the instruction guide on how to run the repository code. You may also enter the following link to directly interface with the website through my VPS instead of having to build it yourself: {URL} (Give it a try!)
 
 This repository is an example project for the IKT222 25H course at UiA Grimstad, Assignment 3 - User Authentication :mortar_board:
 
@@ -17,13 +17,14 @@ Start by cloning the repository to your local computer:
 git clone https://github.com/SolUrsi/IKT222-Assignment-3.git
 ```
 
+Navigate to the root directory of the cloned repository.
 Now copy the contents of `.env.example` into a new environment `.env` and change the SECRET_KEY variable to a secure string. This will be used by Flask to verify sessions:
 
 ```bash
 cp .env.example .env
 ```
 
-From here you may build the Docker image and run it in Docker Compose:
+From here you may build the Docker image and run it in Docker Compose. The database structure will be automatically created in the ./data directory during the build process.
 
 ```bash
 sudo docker compose build && sudo docker compose up -d
