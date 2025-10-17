@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
-from datetime import datetime, timedelta
+import datetime
+from datetime import timedelta
 
 from .models import db, User
 from .app import bcrypt
@@ -43,8 +44,8 @@ def login():
         password = form.password.data
         user = User.query.filter_by(username=username).first()
 
-        if user and user.lockout_until and user.lockout_until > datetime.now(datetime.UTC):
-            remaining = user.lockout_until - datetime.now(datetime.UTC)
+        if user and user.lockout_until and user.lockout_until > datetime.datetime.now(datetime.UTC):
+            remaining = user.lockout_until - datetime.datetime.now(datetime.UTC)
             flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION.Agent locked. Try again in {remaining.seconds // 60} minutes and {remaining.seconds % 60} seconds.", "error")
             return render_template("login.html", form=form)
         
