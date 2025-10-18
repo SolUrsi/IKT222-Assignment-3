@@ -3,10 +3,12 @@ from flask.cli import with_appcontext
 import click
 import os
 import sys
+import pyotp
 
 from .extensions import bcrypt, login_manager 
 from .auth_bp import auth_bp
 from .main_bp import main_bp
+from .twofa_bp import twofa_bp
 from .models import db, User, Post
 
 def get_db_path(app_instance):
@@ -65,8 +67,11 @@ def seed_data():
     hashed_password1 = bcrypt.generate_password_hash("password").decode('utf-8')
     hashed_password2 = bcrypt.generate_password_hash("secret").decode('utf-8')
 
-    alice = User(username='Alice', email='alice@secret.com', password=hashed_password1, failed_login_attempts=0, lockout_until=None)
-    bob = User(username='Bob', email='bob@secret.com', password=hashed_password2, failed_login_attempts=0, lockout_until=None)
+    otp_secret1 = pyotp.random_base32()
+    otp_secret2 = pyotp.random_base32()
+
+    alice = User(username='Alice', email='alice@secret.com', password=hashed_password1, failed_login_attempts=0, lockout_until=None, otp_secret=otp_secret1, is_2fa_enabled=True)
+    bob = User(username='Bob', email='bob@secret.com', password=hashed_password2, failed_login_attempts=0, lockout_until=None, otp_secret=otp_secret2, is_2fa_enabled=True)
 
     db.session.add_all([alice, bob])
     db.session.commit()
@@ -96,3 +101,4 @@ def seed_data():
 # Blueprints
 app.register_blueprint(auth_bp)
 app.register_blueprint(main_bp)
+app.register_blueprint(twofa_bp)

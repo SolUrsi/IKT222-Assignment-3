@@ -1,6 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template, redirect, url_for, flash, session, request
+from flask_login import login_required, current_user, login_user
 from sqlalchemy import asc
+import pyotp
+import qrcode
+from io import BytesIO
+import base64
 
 from .models import db, Post, User
 from .forms import MessageForm
@@ -36,4 +40,5 @@ def room():
     posts = Post.query.options(db.joinedload(Post.author)).order_by(asc(Post.timestamp)).all()
 
     return render_template("room.html", posts=posts, form=form)
+
 

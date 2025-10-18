@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from flask_login import login_user, logout_user, login_required
 from datetime import datetime, timedelta
+import pyotp
 
 from .models import db, User
 from .app import bcrypt
@@ -43,27 +44,38 @@ def login():
         password = form.password.data
         user = User.query.filter_by(username=username).first()
 
+        # Check for Lockout
+        # UTCNow redacted, but is used here because of import errors with datetime importing datetime
+        # -- To lazy to fix properly :p
         if user and user.lockout_until and user.lockout_until > datetime.utcnow():
             remaining = user.lockout_until - datetime.utcnow()
             flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION.Agent locked. Try again in {remaining.seconds // 60} minutes and {remaining.seconds % 60} seconds.", "error")
             return render_template("login.html", form=form)
         
-        # --- Check Credentials ---
+        # Check Credentials 
         if user and bcrypt.check_password_hash(user.password, password):
-            # --- Successful Login: Reset attempts and lockout ---
+            # -- Successful Login: Reset attempts and lockout 
             user.failed_login_attempts = 0
             user.lockout_until = None
             db.session.commit()
 
-            login_user(user)
-            flash("[SYSTEM] Operation successful. Agent now active.", "success")
-            return redirect(url_for("main.room"))
+            if user.is_2fa_enabled:
+                # Store user ID temporarily in the session (Factor 1 complete)
+                session['2fa_user_id'] = user.id
+                flash("[SYSTEM] Credentials verified. Awaiting 2FA token.", "info")
+                return redirect(url_for('twofa.verify_2fa'))
+            else:
+                # 2FA not enabled, redirect to 2FA setup
+                session['setup_2fa_user_id'] = user.id
+                flash("[SYSTEM] Security mandate: Two-Factor Setup Required.", "warning")
+                return redirect(url_for('twofa.setup_2fa_mandatory'))
+            
         else:
-            # --- Failed Login Attempt ---
+            # -- Failed Login Attempt 
             if user:
                 user.failed_login_attempts += 1
 
-                # --- 2. Check for Lockout condition ---
+                # Check for Lockout condition  
                 if user.failed_login_attempts >= MAX_LOGIN_ATTEMPTS:
                     lockout_time = datetime.utcnow() + timedelta(minutes=LOCKOUT_DURATION_MINUTES)
                     user.lockout_until = lockout_time
@@ -72,7 +84,7 @@ def login():
                 else:
                     flash(f"[SYSTEM] WHISKER PROTOCOL VIOLATION.Invalid agent credentials. You have {MAX_LOGIN_ATTEMPTS - user.failed_login_attempts} attempts left.", "error")
             else:
-                # Security Best Practice: Don't give away whether the *username* exists.
+                # Security Best Practice: Don't give away whether the username exists.
                 flash("[SYSTEM] WHISKER PROTOCOL VIOLATION.Invalid agent credentials.", "error")
             
             db.session.commit()
@@ -85,3 +97,7 @@ def logout():
     logout_user()
     flash("[SYSTEM] Agent has closed comms.", "info")
     return redirect(url_for("main.home"))
+
+
+
+

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}2FA Verification{% endblock %}
+
+{% block content %}
+<div class="max-w-sm mx-auto p-6 bg-gray-900 rounded-xl shadow-2xl border-2 border-emerald-600/50 text-white mt-12">
+    
+    <header class="text-center mb-6">
+        <h1 class="text-3xl font-extrabold text-emerald-400 mb-2">
+            🔐 Access Granted
+        </h1>
+        <p class="text-gray-400">Two-Factor Authentication Required</p>
+    </header>
+
+    <p class="mb-6 text-center text-gray-300">
+        Please enter the 6-digit code from your authenticator app to proceed.
+    </p>
+
+    <form method="POST">
+        <div class="mb-4">
+            <label for="token" class="block text-sm font-medium mb-2 sr-only">2FA Code</label>
+            <input type="text" id="token" name="token" required 
+                   class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-emerald-500 focus:border-emerald-500 text-center text-3xl tracking-widest font-mono" 
+                   placeholder="000000" maxlength="6" autocomplete="off" inputmode="numeric">
+        </div>
+        
+        <button type="submit" 
+                class="w-full mt-4 px-4 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-700 transition duration-150">
+            Verify Code
+        </button>
+    </form>
+    
+    <div class="mt-6 text-sm text-center">
+        <p class="text-gray-500">
+            <a href="{{ url_for('auth.logout') }}" class="text-gray-500 hover:text-emerald-300 transition duration-150">
+                Not you? Log out.
+            </a>
+        </p>
+        </div>
+
+</div>
+{% endblock %}
