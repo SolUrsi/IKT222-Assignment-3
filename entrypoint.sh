@@ -6,7 +6,7 @@ DB_FILE="/app/data/app.db"
 if [ ! -f "$DB_FILE" ]; then
     echo "Database file not found. Running initialization."
     # 2. Run the initialization command
-    flask --app code.app db-init
+    flask --app code.app init-db
 else
     echo "Database file found. Skipping initialization."
 fi
