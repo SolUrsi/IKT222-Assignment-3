@@ -1,6 +1,10 @@
 #!/bin/sh
 
-DB_FILE="/app/data/app.db"
+DB_DIR="/app/data" 
+DB_FILE="${DB_DIR}/app.db" 
+export FLASK_APP=code.app:app
+
+mkdir -p "$DB_DIR"
 
 # 1. Check if the database file already exists.
 if [ ! -f "$DB_FILE" ]; then
@@ -12,4 +16,4 @@ else
 fi
 
 # 3. Execute the original CMD (Gunicorn) from Dockerfile, this will replace the CMD.
-exec gunicorn --bind 0.0.0.0:5000 code.app:app
+exec gunicorn --workers 4 --bind 0.0.0.0:5000 code.app:app
