@@ -1,6 +1,6 @@
 # IKT222-Assignment-3
 
-This is the instruction guide on how to run the repository code. You may also enter the following link to directly interface with the website through my VPS instead of having to build it yourself: [Website](https://assignment3.berkanan.no)
+This is the instruction guide on how to run the repository code. You may also enter the following link to directly interface with the website through my VPS instead of having to build it yourself: [Website](https://assignment3.berkanan.no) (Closed)
 
 This repository is an example project for the IKT222 25H course at UiA Grimstad, Assignment 3 - User Authentication :mortar_board:
 
